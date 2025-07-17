@@ -1,0 +1,4 @@
+name: NLeague
+version: '1.0-SNAPSHOT'
+main: com.notpatch.nLeague.NLeague
+api-version: '1.21'
