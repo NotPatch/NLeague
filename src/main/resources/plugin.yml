@@ -1,4 +1,22 @@
 name: NLeague
 version: '1.0-SNAPSHOT'
 main: com.notpatch.nLeague.NLeague
-api-version: '1.21'
+api-version: '1.16'
+
+soft-depend:
+  - PlaceholderAPI
+
+commands:
+  nleague:
+    aliases:
+      - ligadmin
+  league:
+    aliases:
+      - lig
+  leagues:
+    aliases:
+      - ligler
+
+libraries:
+  - 'com.zaxxer:HikariCP:6.3.0'
+  - 'com.github.ben-manes.caffeine:caffeine:3.2.1'
