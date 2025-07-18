@@ -46,7 +46,7 @@ public class BoostManager {
         cancelBoostTask(uuid);
 
         String serverVersion = Bukkit.getVersion();
-        boolean isFolia = serverVersion.contains("Folia");
+        boolean isFolia = serverVersion.contains("Folia") || serverVersion.contains("Luminol");
 
         if (isFolia) {
             try {

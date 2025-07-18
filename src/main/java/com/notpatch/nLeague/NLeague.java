@@ -29,7 +29,7 @@ public final class NLeague extends JavaPlugin {
         instance = this;
 
         String serverVersion = Bukkit.getVersion();
-        boolean isFolia = serverVersion.contains("Folia");
+        boolean isFolia = serverVersion.contains("Folia") || serverVersion.contains("Luminol");
 
         int minecraftMajorVersion = 0;
         try {
