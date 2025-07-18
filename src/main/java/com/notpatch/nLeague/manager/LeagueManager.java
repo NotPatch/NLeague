@@ -103,13 +103,13 @@ public class LeagueManager {
                 playerData.setCurrentLeagueID(newLeague.getId());
 
                 if(newRank > previousRank){
-                    String title = LangUtil.getMessage("league-up-title").split("~")[0];
-                    String subtitle = LangUtil.getMessage("league-up-title").split("~")[1];
+                    String title = LangUtil.getMessage("league-up-title").split("~")[0].replace("%league%", newLeague.getDisplayName());
+                    String subtitle = LangUtil.getMessage("league-up-title").split("~")[1].replace("%league%", newLeague.getDisplayName());
                     player.sendTitle(title, subtitle, 10, 20, 10);
                     executePromotionCommands(player, newLeague);
                 }else if(newRank < previousRank){
-                    String title = LangUtil.getMessage("league-down-title").split("~")[0];
-                    String subtitle = LangUtil.getMessage("league-down-title").split("~")[1];
+                    String title = LangUtil.getMessage("league-down-title").split("~")[0].replace("%league%", newLeague.getDisplayName());
+                    String subtitle = LangUtil.getMessage("league-down-title").split("~")[1].replace("%league%", newLeague.getDisplayName());
                     player.sendTitle(title, subtitle, 10,20,10);
                 }
             }
