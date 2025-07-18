@@ -1,5 +1,6 @@
 package com.notpatch.nLeague.util;
 
+import com.notpatch.nLeague.LanguageLoader;
 import com.notpatch.nLeague.NLeague;
 import com.notpatch.nLeague.manager.LeagueManager;
 import com.notpatch.nLeague.manager.PlayerDataManager;
@@ -17,14 +18,14 @@ public class LangUtil {
     private static final Configuration config = main.getConfig();
     private static final PlayerDataManager playerDataManager = main.getPlayerDataManager();
     private static final LeagueManager leagueManager = main.getLeagueManager();
+    private static final LanguageLoader languageLoader = main.getLanguageLoader();
 
     public static String getMessage(String path) {
-        String message = config.getString("messages." + path, "&cMessage not found: " + path);
-        return ColorUtil.hexColor(message);
+        return languageLoader.get(path);
     }
 
     public static List<String> getInfoMessage(Player player) {
-        List<String> messages = config.getStringList("messages.league-info");
+        List<String> messages = languageLoader.getList("league-info");
         PlayerData playerData = playerDataManager.getPlayerData(player.getUniqueId());
         if (playerData == null) return Collections.emptyList();
 
@@ -49,7 +50,6 @@ public class LangUtil {
 
     public static String getProgressBar(double progress) {
         progress = Math.max(0.0D, Math.min(100.0D, progress));
-        Configuration config = NLeague.getInstance().getConfig();
         int length = config.getInt("progress-bar.length");
         String completedChar = config.getString("progress-bar.completed-char");
         String remainingChar = config.getString("progress-bar.remaining-char");
