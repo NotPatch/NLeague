@@ -1,0 +1,42 @@
+# Database Settings
+database:
+  # Database type: mysql, sqlite
+  type: sqlite
+  # Database host
+  host: localhost
+  # Database port
+  port: 3306
+  # Database name
+  database: hazecore
+  # Database username
+  username: root
+  # Database password
+  password: <PASSWORD>
+  # Database pool size
+  pool-size: 10
+  # Database pool minimum idle
+  minimum-idle: 5
+  # Database pool maximum lifetime in seconds
+  maximum-lifetime: 1800000
+  # Database keep alive time in seconds
+  keepalive-time: 0
+  # Database connection timeout in seconds
+  connection-timeout: 30000
+
+point:
+  vip:
+    kill: 10
+    death: 5
+  default:
+    kill: 5
+    death: 3
+
+
+progress-bar:
+  length: 15
+  remaining-char: "░"
+  completed-char: "█"
+  remaining-color: "&7"
+  completed-color: "&a"
+
+lang: tr_TR

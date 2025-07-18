@@ -1,0 +1,26 @@
+leagues:
+  bronzeV:
+    display-name: '&eBronz 5'
+    required-points: 0
+    promotion-commands:
+      - give %player% diamond 1
+  bronzeIV:
+    display-name: '&eBronz 4'
+    required-points: 100
+    promotion-commands:
+      - give %player% diamond 1
+  bronzeIII:
+    display-name: '&eBronz 3'
+    required-points: 150
+    promotion-commands:
+      - give %player% diamond 1
+  bronzeII:
+    display-name: '&eBronz 2'
+    required-points: 200
+    promotion-commands:
+      - give %player% diamond 1
+  bronzeI:
+    display-name: '&eBronz 1'
+    required-points: 250
+    promotion-commands:
+      - give %player% diamond 1

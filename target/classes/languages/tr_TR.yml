@@ -1,0 +1,36 @@
+# --------------------------------------------------- #
+#                   NLeague Messages                  #
+#               Translated to Turkish (TR)            #
+# --------------------------------------------------- #
+
+no-permission: "&4! &cBu komutu kullanmak için yetkiniz yok!"
+wrong-usage: "&c! &f/nleague &7[addpoint | removepoint | setpoint | setleague | setboost] [player] [<multiplier | time>]"
+player-not-found: "&4! &cOyuncu &4%player% &cbulunamadı!"
+point-negative: "&4! &cPuan negatif olamaz!"
+invalid-number: "&4! &cGeçersiz sayı değeri!"
+point-added-admin: "&a! &a%player% &7adlı oyuncuya &a%points% &7puan eklendi!"
+point-added-player: "&a! &a%points% &7puan kazandın!"
+point-removed-admin: "&a! &a%player% &7adlı oyuncudan &a%points% &7puan silindi!"
+point-removed-player: "&a! &c%points% &7puan kaybettin!"
+point-set-admin: "&a! &a%player% &7adlı oyuncunun puanı &a%points% &7olarak ayarlandı!"
+point-set-player: "&a! &7Puanın &a%points% &7olarak ayarlandı!"
+invalid-league: "&4! &cBu isimde bir lig bulunamadı!"
+league-set-admin: "&a! &a%player% &7adlı oyuncunun ligi &a%league% &7olarak ayarlandı!"
+league-set-player: "&a! &7Ligin &a%league% &7olarak ayarlandı!"
+boost-give-admin: "&a! &a%player% &7adlı oyuncuya &a%multiplier%x &7boost &a%hours% &7saatliğine verildi!"
+boost-give-player: "&a! &a%hours% &7saatliğine &a%multiplier%x &7boost kazandın!"
+reload: "&a! &7Eklenti yeniden başlatılıyor!"
+actionbar-point-gain: "&a+%points% &7(&f%total_points%&7)"
+actionbar-point-loss: "&c-%points% &7(&f%total_points%&7)"
+# ~ is split for subtitle
+league-up-title: "&a🏆 Lig Atladın 🏆~&f%league%"
+league-down-title: "&c🏆 Lig Düştün 🏆~&f%league%"
+league-info:
+  - ""
+  - "&7| &bLigin: &f%league%"
+  - "&7| &bSonraki Lig: &f%next_league%"
+  - "&7| &bPuanın: &f%points%"
+  - "&7| &bİlerlemen: &f%progressBar% &8| &f%progress%"
+  - "&7| &bBoost: &f%multiplier% &7(&f%minutes% dakika&7)"
+  - ""
+leagues-info: "&7| &bLig: &f%league% &7- &f%points%"

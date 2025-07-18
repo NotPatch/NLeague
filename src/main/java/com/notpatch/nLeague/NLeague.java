@@ -10,6 +10,7 @@ import com.notpatch.nLeague.listener.PlayerQuitListener;
 import com.notpatch.nLeague.manager.*;
 import com.notpatch.nLeague.util.NLogger;
 import lombok.Getter;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class NLeague extends JavaPlugin {
@@ -26,6 +27,36 @@ public final class NLeague extends JavaPlugin {
     @Override
     public void onEnable() {
         instance = this;
+
+        String serverVersion = Bukkit.getVersion();
+        boolean isFolia = serverVersion.contains("Folia") || serverVersion.contains("Luminol");
+
+        int minecraftMajorVersion = 0;
+        try {
+            String minecraftVersion = Bukkit.getBukkitVersion().split("-")[0];
+            String[] versionParts = minecraftVersion.split("\\.");
+            if (versionParts.length >= 2) {
+                minecraftMajorVersion = Integer.parseInt(versionParts[1]);
+            }
+        } catch (NumberFormatException e) {
+            NLogger.error("Failed to parse Minecraft version: " + e.getMessage());
+            Bukkit.getPluginManager().disablePlugin(this);
+            return;
+        }
+
+        if (isFolia) {
+            if (minecraftMajorVersion < 20) {
+                NLogger.error("NLeague requires Minecraft 1.20 or higher to run on Folia.");
+                Bukkit.getPluginManager().disablePlugin(this);
+                return;
+            }
+        } else {
+            if (minecraftMajorVersion < 16) {
+                NLogger.error("NLeague requires Minecraft 1.16 or higher to run on Paper/Spigot.");
+                Bukkit.getPluginManager().disablePlugin(this);
+                return;
+            }
+        }
 
         saveDefaultConfig();
         getConfig().options().copyDefaults(true);
