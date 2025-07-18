@@ -56,9 +56,16 @@ public class PlayerDataManager {
     }
 
     public void saveAllCachedData() {
-        for (PlayerData playerData : cache.asMap().values()) {
-            databaseManager.savePlayerData(playerData);
-        }
+        CompletableFuture<?>[] futures = cache.asMap().values().stream()
+                .map(databaseManager::savePlayerData)
+                .toArray(CompletableFuture[]::new);
+
+        CompletableFuture.allOf(futures)
+                .exceptionally(throwable -> {
+                    NLogger.error("Error saving cached player data: " + throwable.getMessage());
+                    return null;
+                })
+                .join();
     }
 
 }
