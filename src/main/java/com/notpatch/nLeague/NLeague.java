@@ -21,17 +21,22 @@ public final class NLeague extends JavaPlugin {
     @Getter private PlayerDataManager playerDataManager;
     @Getter private DatabaseManager databaseManager;
     @Getter private BoostManager boostManager;
+    @Getter private LanguageLoader languageLoader;
 
     @Override
     public void onEnable() {
         instance = this;
 
         saveDefaultConfig();
+        getConfig().options().copyDefaults(true);
         saveConfig();
 
         databaseManager = new DatabaseManager(this);
         databaseManager.connect();
         databaseManager.initializeTables();
+
+        languageLoader = new LanguageLoader();
+        languageLoader.loadLangs();
 
         configurationManager = new ConfigurationManager();
         configurationManager.loadConfigurations();
