@@ -1,6 +1,7 @@
 package com.notpatch.nLeague.command;
 
 import com.notpatch.nLeague.NLeague;
+import com.notpatch.nLeague.manager.LeagueManager;
 import com.notpatch.nLeague.manager.PlayerDataManager;
 import com.notpatch.nLeague.model.League;
 import com.notpatch.nLeague.model.PlayerData;
@@ -47,7 +48,10 @@ public class AdminCommand implements TabExecutor {
             NLeague.getInstance().reloadConfig();
             NLeague.getInstance().saveDefaultConfig();
             NLeague.getInstance().saveConfig();
+            LeagueManager leagueManager = NLeague.getInstance().getLeagueManager();
             NLeague.getInstance().getConfigurationManager().getLeagueConfiguration().reloadConfiguration();
+            NLeague.getInstance().getLanguageLoader().loadLangs();
+            leagueManager.loadLeagues();
             commandSender.sendMessage(LangUtil.getMessage("reload"));
             return true;
         }
