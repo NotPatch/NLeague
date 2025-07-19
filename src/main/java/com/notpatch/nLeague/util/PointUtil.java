@@ -7,52 +7,40 @@ import org.bukkit.entity.Player;
 
 public class PointUtil {
 
+    private static final String BASE_PATH = "points-system.groups";
+
     public static int getKillPoint(Player player) {
-        NLeague main = NLeague.getInstance();
-        Configuration config = main.getConfig();
-
-        ConfigurationSection pointSection = config.getConfigurationSection("point");
-
-        if (pointSection == null) {
-            return 5;
-        }
-
-        for (String key : pointSection.getKeys(false)) {
-            if (key.equalsIgnoreCase("default")) {
-                continue;
-            }
-
-            if (player.hasPermission("group." + key)) {
-                return pointSection.getInt(key + ".kill");
-            }
-        }
-
-        return pointSection.getInt("default.kill");
+        return getPointForAction(player, "on-kill");
     }
 
     public static int getDeathPoint(Player player) {
-        NLeague main = NLeague.getInstance();
-        Configuration config = main.getConfig();
-
-        ConfigurationSection pointSection = config.getConfigurationSection("point");
-
-        if (pointSection == null) {
-            return 5;
-        }
-
-        for (String key : pointSection.getKeys(false)) {
-            if (key.equalsIgnoreCase("default")) {
-                continue;
-            }
-
-            if (player.hasPermission("group." + key)) {
-                return pointSection.getInt(key + ".death");
-            }
-        }
-
-        return pointSection.getInt("default.death");
+        return getPointForAction(player, "on-death");
     }
 
+    private static int getPointForAction(Player player, String action) {
+        Configuration config = NLeague.getInstance().getConfig();
 
+        ConfigurationSection groupsSection = config.getConfigurationSection(BASE_PATH);
 
+        if (groupsSection == null) {
+            NLogger.warn("Config file is missing the '" + BASE_PATH + "' section!");
+            return 0;
+        }
+
+        String playerBestGroup = "default";
+
+        for (String groupName : groupsSection.getKeys(false)) {
+            if (player.hasPermission("group." + groupName)) {
+                playerBestGroup = groupName;
+                break;
+            }
+        }
+
+        String defaultPath = BASE_PATH + ".default.actions." + action;
+        int defaultPoint = config.getInt(defaultPath, 0);
+
+        String groupPath = BASE_PATH + "." + playerBestGroup + ".actions." + action;
+
+        return config.getInt(groupPath, defaultPoint);
+    }
 }
