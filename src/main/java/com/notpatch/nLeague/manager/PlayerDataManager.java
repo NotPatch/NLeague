@@ -21,7 +21,7 @@ public class PlayerDataManager {
         this.main = main;
         this.databaseManager = main.getDatabaseManager();
         cache = Caffeine.newBuilder()
-                .expireAfterWrite(30, TimeUnit.MINUTES)
+                .expireAfterWrite(60, TimeUnit.MINUTES)
                 .maximumSize(10_000)
                 .build();
     }
@@ -52,7 +52,19 @@ public class PlayerDataManager {
     }
 
     public PlayerData getPlayerData(UUID uuid) {
-        return cache.getIfPresent(uuid);
+        PlayerData playerData = cache.getIfPresent(uuid);
+        if(playerData != null){
+            return playerData;
+        }
+
+        PlayerData loadedPlayerData = databaseManager.loadPlayerData(uuid).join();
+        if(loadedPlayerData != null){
+            cache.put(uuid, loadedPlayerData);
+            return loadedPlayerData;
+        }
+
+        return null;
+
     }
 
     public void saveAllCachedData() {
