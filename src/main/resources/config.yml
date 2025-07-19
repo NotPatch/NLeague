@@ -23,13 +23,46 @@ database:
   # Database connection timeout in seconds
   connection-timeout: 30000
 
-point:
-  vip:
-    kill: 10
-    death: 5
-  default:
-    kill: 5
-    death: 3
+points-system:
+  # You can add as many permission groups as you want here.
+  # If a player's group is not listed here, the 'default' settings will be used.
+  groups:
+    default:
+      # Point settings for default players.
+      actions:
+        on-kill: 5
+        on-death: 3  # Loses 3 points on death.
+
+    vip:
+      # Point settings for VIP players.
+      actions:
+        on-kill: 10
+        on-death: 5  # Loses 5 points on death.
+
+
+kill-protection:
+  # Prevents a player from receiving points or rewards for killing
+  # another player who has the same IP address.
+  # This is effective for preventing the use of alternate accounts (alts).
+  same-ip:
+    # Set to 'true' to enable this protection, 'false' to disable.
+    enabled: true
+    punish-commands:
+      - "warn %player% &cYou cannot earn points for killing a player with the same IP address."
+
+    # Prevents a player from receiving points or rewards after killing
+    # the same player a certain number of times. Prevents kill farming.
+  kill-limit:
+    # Set to 'true' to enable this protection, 'false' to disable.
+    enabled: true
+    # Determines how many times a player can get points from the same person.
+    # For example, if set to 5, the player will not get points on the 6th kill.
+    max-kills: 5
+    # Determines how long it takes for this kill count to reset.
+    # After resetting, the player can earn points from the same person again.
+    reset-time: 1h
+    punish-commands:
+      - "warn %player% &cYou have killed this player too many times. You won't be able to earn points from them for a while."
 
 
 progress-bar:
