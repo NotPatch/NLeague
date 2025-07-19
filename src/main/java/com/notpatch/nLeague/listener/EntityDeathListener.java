@@ -3,6 +3,8 @@ package com.notpatch.nLeague.listener;
 import com.notpatch.nLeague.NLeague;
 import com.notpatch.nLeague.manager.LeagueManager;
 import com.notpatch.nLeague.manager.PlayerDataManager;
+import com.notpatch.nLeague.model.KillData;
+import com.notpatch.nLeague.model.KillPair;
 import com.notpatch.nLeague.model.PlayerData;
 import com.notpatch.nLeague.util.LangUtil;
 import com.notpatch.nLeague.util.PointUtil;
@@ -13,10 +15,14 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class EntityDeathListener implements Listener {
 
     private final NLeague main;
 
+    private final Map<KillPair, KillData> killTracker = new HashMap<>();
     private final LeagueManager leagueManager;
     private final PlayerDataManager  playerDataManager;
 
@@ -34,6 +40,36 @@ public class EntityDeathListener implements Listener {
         Player victim = e.getEntity();
 
         if(killer.equals(victim)) return;
+
+        if(main.getSettingsManager().isSameIpEnabled()){
+            if(main.getSettingsManager().isPlayersSame(killer, victim)){
+                main.getSettingsManager().executeSameIpCommands(killer);
+                main.getSettingsManager().executeSameIpCommands(victim);
+                return;
+            }
+        }
+
+        if(main.getSettingsManager().isKillLimitEnabled()){
+            KillPair pair = new KillPair(killer.getUniqueId(), victim.getUniqueId());
+            KillData data = killTracker.get(pair);
+            long now = System.currentTimeMillis();
+            KillData newData;
+
+            if(data != null){
+                if (now - data.timestamp() > main.getSettingsManager().getResetTimeInMillis()) {
+                    newData = new KillData(1, now);
+                } else {
+                    if (data.killCount() >= main.getSettingsManager().getKillLimit()) {
+                        main.getSettingsManager().executeKillLimitCommands(killer);
+                        return;
+                    }
+                    newData = new KillData(data.killCount() + 1, now);
+                }
+            }else{
+                newData = new KillData(1, now);
+            }
+            killTracker.put(pair, newData);
+        }
 
         PlayerData killerData = playerDataManager.getPlayerData(killer.getUniqueId());
         PlayerData victimData = playerDataManager.getPlayerData(victim.getUniqueId());
