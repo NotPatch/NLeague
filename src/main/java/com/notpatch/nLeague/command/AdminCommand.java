@@ -44,11 +44,13 @@ public class AdminCommand implements TabExecutor {
             return true;
         }
 
+        LeagueManager leagueManager = NLeague.getInstance().getLeagueManager();
+
         if(args.length == 1 && args[0].equalsIgnoreCase("reload")){
             NLeague.getInstance().reloadConfig();
             NLeague.getInstance().saveDefaultConfig();
             NLeague.getInstance().saveConfig();
-            LeagueManager leagueManager = NLeague.getInstance().getLeagueManager();
+
             NLeague.getInstance().getConfigurationManager().getLeagueConfiguration().reloadConfiguration();
             NLeague.getInstance().getLanguageLoader().loadLangs();
             leagueManager.loadLeagues();
@@ -101,6 +103,7 @@ public class AdminCommand implements TabExecutor {
                         playerData.setPoints(points);
                         commandSender.sendMessage(LangUtil.getMessage("point-set-admin").replace("%player%", targetName).replace("%points%", String.valueOf(points)));
                         target.sendMessage(LangUtil.getMessage("point-set-player").replace("%points%", String.valueOf(points)));
+                        leagueManager.executeLeagueWorks(target);
                     }
                 } catch (NumberFormatException e) {
                     commandSender.sendMessage(LangUtil.getMessage("invalid-number"));
