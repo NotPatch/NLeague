@@ -135,6 +135,10 @@ public class LeagueManager {
             return null;
         }
 
+        if(sortedLeagues.get(currentIndex + 1) == null){
+            return currentLeague;
+        }
+
         return sortedLeagues.get(currentIndex + 1);
     }
 
