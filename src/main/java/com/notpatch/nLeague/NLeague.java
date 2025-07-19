@@ -21,6 +21,7 @@ public final class NLeague extends JavaPlugin {
     @Getter private LeagueManager leagueManager;
     @Getter private PlayerDataManager playerDataManager;
     @Getter private DatabaseManager databaseManager;
+    @Getter private SettingsManager settingsManager;
     @Getter private BoostManager boostManager;
     @Getter private LanguageLoader languageLoader;
 
@@ -61,6 +62,9 @@ public final class NLeague extends JavaPlugin {
         saveDefaultConfig();
         getConfig().options().copyDefaults(true);
         saveConfig();
+
+        settingsManager = new SettingsManager(this);
+        settingsManager.loadSettings();
 
         databaseManager = new DatabaseManager(this);
         databaseManager.connect();
