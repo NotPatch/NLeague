@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 
 public class AdminCommand implements TabExecutor {
 
-    private static final List<String> SUB_COMMANDS = Arrays.asList("reload","addpoint", "removepoint", "setpoint", "setleague", "setboost");
+    private static final List<String> SUB_COMMANDS = Arrays.asList("reload","addpoint", "removepoint", "setpoint", "setleague", "setboost", "info");
     private static final List<String> POINT_SUGGESTIONS = Arrays.asList("1", "10", "50", "100");
     private static final List<String> BOOST_MULTIPLIER_SUGGESTIONS = Arrays.asList("1.5", "2.0", "2.5", "3.0");
     private static final List<String> BOOST_DURATION_SUGGESTIONS = Arrays.asList("1", "3", "6", "12", "24");
@@ -50,7 +50,7 @@ public class AdminCommand implements TabExecutor {
             NLeague.getInstance().reloadConfig();
             NLeague.getInstance().saveDefaultConfig();
             NLeague.getInstance().saveConfig();
-
+            NLeague.getInstance().getSettingsManager().loadSettings();
             NLeague.getInstance().getConfigurationManager().getLeagueConfiguration().reloadConfiguration();
             NLeague.getInstance().getLanguageLoader().loadLangs();
             leagueManager.loadLeagues();
@@ -77,8 +77,18 @@ public class AdminCommand implements TabExecutor {
 
 
         switch (subCommand) {
+
+            case "info":
+                List<String> info = LangUtil.getAdminInfoMessage(target);
+                for (String message : info) {
+                    commandSender.sendMessage(message);
+                }
+                return true;
+
             case "addpoint":
             case "removepoint":
+
+
             case "setpoint":
                 if (args.length != 3) {
                     commandSender.sendMessage(LangUtil.getMessage("wrong-usage"));
