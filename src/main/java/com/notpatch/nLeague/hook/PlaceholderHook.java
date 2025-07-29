@@ -3,6 +3,7 @@ package com.notpatch.nLeague.hook;
 import com.notpatch.nLeague.NLeague;
 import com.notpatch.nLeague.manager.LeagueManager;
 import com.notpatch.nLeague.manager.PlayerDataManager;
+import com.notpatch.nLeague.model.League;
 import com.notpatch.nLeague.model.PlayerData;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.OfflinePlayer;
@@ -56,6 +57,11 @@ public class PlaceholderHook extends PlaceholderExpansion {
                 return data.getPoints()+"";
             }else if(split[0].equalsIgnoreCase("progress")){
                 return leagueManager.getProgress((Player) player)+"";
+            }else if(split[0].equalsIgnoreCase("order")){
+                League league = leagueManager.getLeagueById(data.getCurrentLeagueID());
+                int index = leagueManager.getSortedLeagues().indexOf(league);
+                int reverse = leagueManager.getSortedLeagues().size() - index;
+                return String.valueOf(reverse);
             }
         }
 
