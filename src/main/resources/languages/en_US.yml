@@ -45,3 +45,12 @@ league-info:
 
 # A single-line message for listing leagues
 leagues-info: "&7| &bLeague: &f%league% &7- &f%points% Points"
+
+player-info:
+  - ""
+  - "&7| &bPlayer: &f%player%"
+  - "&7| &bLeague: &f%league%"
+  - "&7| &bPoints: &f%points%"
+  - "&7| &bProgress: &f%progressBar% &8| &f%progress%"
+  - "&7| &bBoost Status: &f%multiplier% &7(&f%minutes% minutes&7)"
+  - ""

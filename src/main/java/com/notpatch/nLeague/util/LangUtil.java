@@ -47,6 +47,29 @@ public class LangUtil {
         return newList;
     }
 
+    public static List<String> getAdminInfoMessage(Player player) {
+        List<String> messages = languageLoader.getList("player-info");
+        PlayerData playerData = playerDataManager.getPlayerData(player.getUniqueId());
+        if (playerData == null) return Collections.emptyList();
+
+        List<String> newList = new ArrayList<>();
+        for (String message : messages) {
+            long remainingSeconds = playerData.getBoost().getRemainingSeconds();
+            long minutes = (long) Math.ceil(remainingSeconds / 60.0);
+            message = message.replace("%player%", player.getName());
+            message = message.replace("%league%", leagueManager.getLeagueById(playerData.getCurrentLeagueID()).getDisplayName());
+            message = message.replace("%points%", String.valueOf(playerData.getPoints()));
+            message = message.replace("%multiplier%", String.valueOf(playerData.getBoost().getMultiplier()));
+            message = message.replace("%minutes%", String.valueOf(minutes));
+            message = message.replace("%next_league%", leagueManager.getNextLeague(leagueManager.getLeagueById(playerData.getCurrentLeagueID())).getDisplayName());
+            message = message.replace("%progressBar%", getProgressBar(leagueManager.getProgress(player)));
+            message = message.replace("%progress%", String.valueOf(leagueManager.getProgress(player)));
+
+            newList.add(ColorUtil.hexColor(message));
+        }
+        return newList;
+    }
+
 
     public static String getProgressBar(double progress) {
         progress = Math.max(0.0D, Math.min(100.0D, progress));
