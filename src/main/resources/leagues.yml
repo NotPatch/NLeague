@@ -4,23 +4,33 @@ leagues:
     required-points: 0
     promotion-commands:
       - give %player% diamond 1
+    demotion-commands:
+      - ""
   bronzeIV:
     display-name: '&eBronz 4'
     required-points: 100
     promotion-commands:
       - give %player% diamond 1
+    demotion-commands:
+      - ""
   bronzeIII:
     display-name: '&eBronz 3'
     required-points: 150
     promotion-commands:
       - give %player% diamond 1
+    demotion-commands:
+      - ""
   bronzeII:
     display-name: '&eBronz 2'
     required-points: 200
     promotion-commands:
       - give %player% diamond 1
+    demotion-commands:
+      - ""
   bronzeI:
     display-name: '&eBronz 1'
     required-points: 250
     promotion-commands:
       - give %player% diamond 1
+    demotion-commands:
+      - ""

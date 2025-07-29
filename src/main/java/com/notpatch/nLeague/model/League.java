@@ -14,6 +14,7 @@ public class League {
     private final String displayName;
     private final int requiredPoints;
     private final List<String> promotionCommands;
+    private final List<String> demotionCommands;
 
     public String getDisplayName() {
         return ColorUtil.hexColor(displayName);

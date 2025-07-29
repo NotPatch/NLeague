@@ -40,9 +40,9 @@ public class LeagueManager {
             String displayName = configuration.getString(path + ".display-name");
             int requiredPoints = configuration.getInt(path + ".required-points");
             List<String> promotionCommands = configuration.getStringList(path + ".promotion-commands");
+            List<String> demotionCommands = configuration.getStringList(path + ".demotion-commands");
 
-
-            League league = new League(leagueId, displayName, requiredPoints, promotionCommands);
+            League league = new League(leagueId, displayName, requiredPoints, promotionCommands, demotionCommands);
 
             leaguesByID.put(leagueId, league);
             sortedLeagues.add(league);
@@ -111,6 +111,7 @@ public class LeagueManager {
                     String title = LangUtil.getMessage("league-down-title").split("~")[0].replace("%league%", newLeague.getDisplayName());
                     String subtitle = LangUtil.getMessage("league-down-title").split("~")[1].replace("%league%", newLeague.getDisplayName());
                     player.sendTitle(title, subtitle, 10,20,10);
+                    executeDemotionCommands(player, getLeagueById(previousLeagueId));
                 }
             }
         }
@@ -132,7 +133,7 @@ public class LeagueManager {
         int currentIndex = sortedLeagues.indexOf(currentLeague);
 
         if (currentIndex == -1 || currentIndex >= sortedLeagues.size() - 1) {
-            return null;
+            return currentLeague;
         }
 
         if(sortedLeagues.get(currentIndex + 1) == null){
@@ -198,8 +199,15 @@ public class LeagueManager {
         return 0.0D;
     }
 
-    public void executePromotionCommands(Player player, League newLeague) {
+    private void executePromotionCommands(Player player, League newLeague) {
         newLeague.getPromotionCommands().forEach(command -> {
+            String formattedCommand = command.replace("%player%", player.getName());
+            main.getServer().dispatchCommand(main.getServer().getConsoleSender(), formattedCommand);
+        });
+    }
+
+    private void executeDemotionCommands(Player player, League oldLeague) {
+        oldLeague.getDemotionCommands().forEach(command -> {
             String formattedCommand = command.replace("%player%", player.getName());
             main.getServer().dispatchCommand(main.getServer().getConsoleSender(), formattedCommand);
         });
