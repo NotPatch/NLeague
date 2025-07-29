@@ -8,10 +8,12 @@ import com.notpatch.nLeague.listener.EntityDeathListener;
 import com.notpatch.nLeague.listener.PlayerJoinListener;
 import com.notpatch.nLeague.listener.PlayerQuitListener;
 import com.notpatch.nLeague.manager.*;
+import com.notpatch.nLeague.task.AutoSaveTask;
 import com.notpatch.nLeague.util.NLogger;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 
 public final class NLeague extends JavaPlugin {
 
@@ -24,6 +26,7 @@ public final class NLeague extends JavaPlugin {
     @Getter private SettingsManager settingsManager;
     @Getter private BoostManager boostManager;
     @Getter private LanguageLoader languageLoader;
+    private BukkitRunnable autoSaveTask;
 
     @Override
     public void onEnable() {
@@ -95,6 +98,9 @@ public final class NLeague extends JavaPlugin {
             new PlaceholderHook(this).register();
             NLogger.info("PlaceholderAPI hooked!");
         }
+
+        autoSaveTask = new AutoSaveTask(this);
+        autoSaveTask.runTaskTimerAsynchronously(this, 0, 20L*600);
 
     }
 
