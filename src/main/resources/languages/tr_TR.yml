@@ -34,3 +34,12 @@ league-info:
   - "&7| &bBoost: &f%multiplier% &7(&f%minutes% dakika&7)"
   - ""
 leagues-info: "&7| &bLig: &f%league% &7- &f%points%"
+
+player-info:
+  - ""
+  - "&7| &bOyuncu: &f%player%"
+  - "&7| &bLigi: &f%league%"
+  - "&7| &bPuanı: &f%points%"
+  - "&7| &bİlerlemesi: &f%progressBar% &8| &f%progress%"
+  - "&7| &bBoost durumu: &f%multiplier% &7(&f%minutes% dakika&7)"
+  - ""
