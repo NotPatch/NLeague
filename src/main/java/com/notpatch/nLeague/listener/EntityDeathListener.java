@@ -3,6 +3,7 @@ package com.notpatch.nLeague.listener;
 import com.notpatch.nLeague.NLeague;
 import com.notpatch.nLeague.manager.LeagueManager;
 import com.notpatch.nLeague.manager.PlayerDataManager;
+import com.notpatch.nLeague.manager.SettingsManager;
 import com.notpatch.nLeague.model.KillData;
 import com.notpatch.nLeague.model.KillPair;
 import com.notpatch.nLeague.model.PlayerData;
@@ -25,11 +26,13 @@ public class EntityDeathListener implements Listener {
     private final Map<KillPair, KillData> killTracker = new HashMap<>();
     private final LeagueManager leagueManager;
     private final PlayerDataManager  playerDataManager;
+    private final SettingsManager settingsManager;
 
     public EntityDeathListener(NLeague main){
         this.main = main;
         this.playerDataManager = main.getPlayerDataManager();
         this.leagueManager = main.getLeagueManager();
+        this.settingsManager = main.getSettingsManager();
     }
 
     @EventHandler
@@ -40,6 +43,10 @@ public class EntityDeathListener implements Listener {
         Player victim = e.getEntity();
 
         if(killer.equals(victim)) return;
+
+        if(settingsManager.getBlacklistWorlds().contains(killer.getWorld().getName())){
+            return;
+        }
 
         if(main.getSettingsManager().isSameIpEnabled()){
             if(main.getSettingsManager().isPlayersSame(killer, victim)){

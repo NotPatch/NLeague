@@ -20,6 +20,8 @@ public class SettingsManager {
     @Getter private int killLimit;
     @Getter private long resetTimeInMillis;
 
+    @Getter private List<String> blacklistWorlds;
+
 
     public SettingsManager(NLeague main){
         this.main = main;
@@ -46,6 +48,8 @@ public class SettingsManager {
         this.sameIpCommands = protectionSection.getStringList("same-ip.punish-commands");
 
         this.killLimitCommands = protectionSection.getStringList("kill-limit.punish-commands");
+
+        this.blacklistWorlds = main.getConfig().getStringList("blacklist-worlds");
 
     }
 

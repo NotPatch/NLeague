@@ -39,6 +39,9 @@ points-system:
         on-kill: 10
         on-death: 5  # Loses 5 points on death.
 
+# In these worlds player's not earn or lose point
+blacklist-worlds:
+  - nopvp
 
 kill-protection:
   # Prevents a player from receiving points or rewards for killing
