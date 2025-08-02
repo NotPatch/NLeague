@@ -1,5 +1,6 @@
 package com.notpatch.nLeague.command;
 
+import com.notpatch.nLeague.gui.LeagueGui;
 import com.notpatch.nLeague.util.LangUtil;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -21,6 +22,7 @@ public class LeagueCommand implements TabExecutor {
         for(String message : list){
             player.sendMessage(message);
         }
+        new LeagueGui(player, 0).open(player);
         return false;
     }
 
