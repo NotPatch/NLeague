@@ -53,6 +53,8 @@ public class PlaceholderHook extends PlaceholderExpansion {
         }
 
         if(split.length == 1){
+
+
             if(split[0].equalsIgnoreCase("points")){
                 return data.getPoints()+"";
             }else if(split[0].equalsIgnoreCase("progress")){
@@ -63,9 +65,22 @@ public class PlaceholderHook extends PlaceholderExpansion {
                 int reverse = leagueManager.getSortedLeagues().size() - index;
                 return String.valueOf(reverse);
             }
+            else if(split[0].equalsIgnoreCase("globalBooster")){
+                if(NLeague.getInstance().getSettingsManager().isGlobalBooster()){
+                    return NLeague.getInstance().getLanguageLoader().get("true");
+                }else{
+                    return NLeague.getInstance().getLanguageLoader().get("false");
+                }
+            }
         }
 
         if(split.length == 2){
+            if(split[0].equalsIgnoreCase("points")){
+                if(split[1].equalsIgnoreCase("formatted")){
+                    double formattedPoints = (double) data.getPoints() /1000;
+                    return String.format("%.1fk", formattedPoints);
+                }
+            }
             if(split[0].equalsIgnoreCase("league")){
                 if(split[1].equalsIgnoreCase("current")){
                     return leagueManager.getLeagueById(data.getCurrentLeagueID()).getDisplayName();
