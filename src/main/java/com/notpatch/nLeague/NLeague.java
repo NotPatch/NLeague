@@ -10,6 +10,7 @@ import com.notpatch.nLeague.listener.PlayerQuitListener;
 import com.notpatch.nLeague.manager.*;
 import com.notpatch.nLeague.task.AutoSaveTask;
 import com.notpatch.nLeague.util.NLogger;
+import fr.mrmicky.fastinv.FastInvManager;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -61,6 +62,8 @@ public final class NLeague extends JavaPlugin {
                 return;
             }
         }
+
+        FastInvManager.register(this);
 
         saveDefaultConfig();
         getConfig().options().copyDefaults(true);
