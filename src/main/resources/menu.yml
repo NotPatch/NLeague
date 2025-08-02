@@ -1,0 +1,55 @@
+title: "&aʟᴇᴀɢᴜᴇѕ"
+size: 54
+pattern:
+  - '@ @ @ @ @ @ @ @ @'
+  - '@ % % % % % % % @'
+  - '@ % % % % % % % @'
+  - '@ % % % % % % % @'
+  - '@ % % % % % % % @'
+  - '< @ @ @ @ @ @ @ >'
+
+items:
+  "@":
+    type: GRAY_STAINED_GLASS_PANE
+    name: " "
+    model-data: 0
+  "<":
+    type: ARROW
+    name: "&fPrevious Page"
+    lore:
+      - ""
+      - "&7Click for previous page"
+      - ""
+    model-data: 0
+  ">":
+    type: ARROW
+    name: "&fNext Page"
+    lore:
+      - ""
+      - "&7Click for next page"
+      - ""
+    model-data: 0
+  "%":
+    completed:
+      type: EMERALD_BLOCK
+      name: "&a%league_name%"
+      lore:
+        - ""
+        - "&7You have advanced beyond this league!"
+        - ""
+    current:
+      type: GOLD_BLOCK
+      name: "&e%league_name%"
+      lore:
+        - ""
+        - "&6You are currently in this league!"
+        - "&fYour current points: &e%points%"
+        - ""
+    not-completed:
+      type: REDSTONE_BLOCK
+      name: "&c%league_name%"
+      lore:
+        - ""
+        - "&fRequired points: &7%league_required_points%"
+        - "&fPoints needed: &c%points_to_next_league%"
+        - ""
