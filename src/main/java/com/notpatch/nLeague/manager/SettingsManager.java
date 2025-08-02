@@ -20,6 +20,9 @@ public class SettingsManager {
     @Getter private int killLimit;
     @Getter private long resetTimeInMillis;
 
+    @Getter private boolean globalBooster;
+    @Getter private double globalBoosterMultiplier;
+
     @Getter private List<String> blacklistWorlds;
 
 
@@ -50,6 +53,10 @@ public class SettingsManager {
         this.killLimitCommands = protectionSection.getStringList("kill-limit.punish-commands");
 
         this.blacklistWorlds = main.getConfig().getStringList("blacklist-worlds");
+
+        this.globalBooster = main.getConfig().getBoolean("global-booster.enabled", false);
+        this.globalBoosterMultiplier = main.getConfig().getDouble("global-booster.multiplier", 2.0);
+
 
     }
 

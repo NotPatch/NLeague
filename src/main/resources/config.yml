@@ -23,6 +23,10 @@ database:
   # Database connection timeout in seconds
   connection-timeout: 30000
 
+global-booster:
+  enabled: false
+  multiplier: 2.0
+
 points-system:
   # You can add as many permission groups as you want here.
   # If a player's group is not listed here, the 'default' settings will be used.
@@ -66,6 +70,16 @@ kill-protection:
     reset-time: 1h
     punish-commands:
       - "warn %player% &cYou have killed this player too many times. You won't be able to earn points from them for a while."
+
+
+# Placeholders
+# %nleague_points%
+# %nleague_points_formatted%
+# %nleague_league_current%
+# %nleague_league_next%
+# %nleague_boost_multiplier%
+# %nleague_boost_remaining%
+# %nleague_globalBooster%
 
 
 progress-bar:
