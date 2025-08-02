@@ -43,3 +43,7 @@ player-info:
   - "&7| &bİlerlemesi: &f%progressBar% &8| &f%progress%"
   - "&7| &bBoost durumu: &f%multiplier% &7(&f%minutes% dakika&7)"
   - ""
+
+
+true: "Açık"
+false: "Kapalı"
