@@ -52,6 +52,7 @@ public class AdminCommand implements TabExecutor {
             NLeague.getInstance().saveConfig();
             NLeague.getInstance().getSettingsManager().loadSettings();
             NLeague.getInstance().getConfigurationManager().getLeagueConfiguration().reloadConfiguration();
+            NLeague.getInstance().getConfigurationManager().getMenuConfiguration().reloadConfiguration();
             NLeague.getInstance().getLanguageLoader().loadLangs();
             leagueManager.loadLeagues();
             commandSender.sendMessage(LangUtil.getMessage("reload"));
