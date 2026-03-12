@@ -93,6 +93,9 @@ public class EntityDeathListener implements Listener {
             pointGain = (int) (pointGain * settingsManager.getGlobalBoosterMultiplier());
         }
 
+        double worldMultiplier = settingsManager.getWorldMultipliers().getOrDefault(killer.getWorld().getName(), 1.0);
+        pointGain = (int) (pointGain * worldMultiplier);
+
         int finalGained = killerData.addPoints(pointGain);
         killer.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacy(LangUtil.getMessage("actionbar-point-gain").replace("%total_points%", String.valueOf(killerData.getPoints())).replace("%points%", String.valueOf(finalGained))));
 

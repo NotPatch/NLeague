@@ -106,7 +106,7 @@ public class LeagueManager {
                     String title = LangUtil.getMessage("league-up-title").split("~")[0].replace("%league%", newLeague.getDisplayName());
                     String subtitle = LangUtil.getMessage("league-up-title").split("~")[1].replace("%league%", newLeague.getDisplayName());
                     player.sendTitle(title, subtitle, 10, 20, 10);
-                    executePromotionCommands(player, newLeague);
+                    executePromotionCommands(player, newLeague, playerData);
                 }else if(newRank < previousRank){
                     String title = LangUtil.getMessage("league-down-title").split("~")[0].replace("%league%", newLeague.getDisplayName());
                     String subtitle = LangUtil.getMessage("league-down-title").split("~")[1].replace("%league%", newLeague.getDisplayName());
@@ -199,11 +199,15 @@ public class LeagueManager {
         return 0.0D;
     }
 
-    private void executePromotionCommands(Player player, League newLeague) {
+    private void executePromotionCommands(Player player, League newLeague, PlayerData playerData) {
+        if (playerData.getClaimedRewardLeagues().contains(newLeague.getId())) {
+            return;
+        }
         newLeague.getPromotionCommands().forEach(command -> {
             String formattedCommand = command.replace("%player%", player.getName());
             main.getServer().dispatchCommand(main.getServer().getConsoleSender(), formattedCommand);
         });
+        playerData.getClaimedRewardLeagues().add(newLeague.getId());
     }
 
     private void executeDemotionCommands(Player player, League oldLeague) {
