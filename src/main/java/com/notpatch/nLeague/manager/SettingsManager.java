@@ -6,7 +6,9 @@ import lombok.Getter;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 public class SettingsManager {
@@ -24,6 +26,9 @@ public class SettingsManager {
     @Getter private double globalBoosterMultiplier;
 
     @Getter private List<String> blacklistWorlds;
+
+    /** Per-world point multipliers. Worlds absent from this map use a multiplier of 1.0. */
+    @Getter private Map<String, Double> worldMultipliers;
 
 
     public SettingsManager(NLeague main){
@@ -56,6 +61,14 @@ public class SettingsManager {
 
         this.globalBooster = main.getConfig().getBoolean("global-booster.enabled", false);
         this.globalBoosterMultiplier = main.getConfig().getDouble("global-booster.multiplier", 2.0);
+
+        this.worldMultipliers = new HashMap<>();
+        ConfigurationSection worldMultipliersSection = main.getConfig().getConfigurationSection("world-multipliers");
+        if (worldMultipliersSection != null) {
+            for (String worldName : worldMultipliersSection.getKeys(false)) {
+                this.worldMultipliers.put(worldName, worldMultipliersSection.getDouble(worldName, 1.0));
+            }
+        }
 
 
     }

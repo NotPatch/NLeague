@@ -14,10 +14,14 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.stream.Collectors;
 
 public class DatabaseManager {
     @Getter
@@ -32,16 +36,17 @@ public class DatabaseManager {
     private final String SELECT_PLAYER_SQL = "SELECT * FROM players WHERE uuid = ?";
 
     private final String MYSQL_SAVE_PLAYER_SQL = """
-        INSERT INTO players (uuid, league, points, boostMultiplier, boostTime) 
-        VALUES (?, ?, ?, ?, ?) 
+        INSERT INTO players (uuid, league, points, boostMultiplier, boostTime, claimedRewards) 
+        VALUES (?, ?, ?, ?, ?, ?) 
         ON DUPLICATE KEY UPDATE 
         league = VALUES(league), points = VALUES(points),
-        boostMultiplier = VALUES(boostMultiplier), boostTime = VALUES(boostTime)
+        boostMultiplier = VALUES(boostMultiplier), boostTime = VALUES(boostTime),
+        claimedRewards = VALUES(claimedRewards)
         """;
 
     private final String SQLITE_SAVE_PLAYER_SQL = """
-        REPLACE INTO players (uuid, league, points, boostMultiplier, boostTime) 
-        VALUES (?, ?, ?, ?, ?)
+        REPLACE INTO players (uuid, league, points, boostMultiplier, boostTime, claimedRewards) 
+        VALUES (?, ?, ?, ?, ?, ?)
         """;
 
     public DatabaseManager(NLeague main) {
@@ -71,6 +76,13 @@ public class DatabaseManager {
                         rs.getDouble("boostMultiplier"),
                         rs.getInt("boostTime")
                 ));
+                String claimedRewardsStr = rs.getString("claimedRewards");
+                Set<String> claimedRewards = claimedRewardsStr != null && !claimedRewardsStr.isEmpty()
+                        ? Arrays.stream(claimedRewardsStr.split(","))
+                                .filter(s -> !s.isEmpty())
+                                .collect(Collectors.toCollection(HashSet::new))
+                        : new HashSet<>();
+                data.setClaimedRewardLeagues(claimedRewards);
                 return data;
             }
             return null;
@@ -91,12 +103,18 @@ public class DatabaseManager {
 
     public CompletableFuture<Void> savePlayerData(PlayerData data) {
         String sql = usingSQLite ? SQLITE_SAVE_PLAYER_SQL : MYSQL_SAVE_PLAYER_SQL;
+        String claimedRewards = data.getClaimedRewardLeagues() == null
+                ? ""
+                : data.getClaimedRewardLeagues().stream()
+                        .filter(s -> s != null && !s.isEmpty())
+                        .collect(Collectors.joining(","));
         return updateAsync(sql,
                 data.getPlayerUUID().toString(),
                 data.getCurrentLeagueID(),
                 data.getPoints(),
                 data.getBoost().getMultiplier(),
-                data.getBoost().getRemainingSeconds()
+                data.getBoost().getRemainingSeconds(),
+                claimedRewards
         ).thenApply(v -> null);
     }
 
@@ -198,7 +216,8 @@ public class DatabaseManager {
             league VARCHAR(16) NOT NULL,
             points INTEGER DEFAULT 0,
             boostMultiplier DOUBLE DEFAULT 1.0,
-            boostTime INTEGER DEFAULT 0
+            boostTime INTEGER DEFAULT 0,
+            claimedRewards TEXT DEFAULT ''
         )
     """;
 
@@ -210,7 +229,31 @@ public class DatabaseManager {
         }).exceptionally(throwable -> {
             NLogger.error("An error occurred while initializing the database tables! Please check your database settings and try again. If the problem persists, contact the developer for support.!");
             return null;
-        });
+        }).join();
+
+        migrateAddClaimedRewards();
+    }
+
+    /**
+     * Adds the {@code claimedRewards} column to the {@code players} table for
+     * existing installations that were created before this column was introduced.
+     * The operation is silently ignored when the column already exists.
+     */
+    private void migrateAddClaimedRewards() {
+        executeAsync(conn -> {
+            try (PreparedStatement ps = conn.prepareStatement(
+                    "ALTER TABLE players ADD COLUMN claimedRewards TEXT DEFAULT ''")) {
+                ps.executeUpdate();
+            } catch (SQLException e) {
+                String msg = e.getMessage();
+                // Ignore "duplicate column" errors that indicate a prior successful migration.
+                if (msg == null || (!msg.toLowerCase().contains("duplicate column")
+                        && !msg.toLowerCase().contains("already exists"))) {
+                    NLogger.warn("Unexpected error during claimedRewards migration: " + msg);
+                }
+            }
+            return null;
+        }).exceptionally(e -> null).join();
     }
 
     public void disconnect() {

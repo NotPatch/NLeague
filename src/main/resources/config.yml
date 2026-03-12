@@ -33,15 +33,27 @@ points-system:
   groups:
     default:
       # Point settings for default players.
+      # Use on-kill-min / on-kill-max for a random range, or on-kill for a fixed value.
       actions:
-        on-kill: 5
-        on-death: 3  # Loses 3 points on death.
+        on-kill-min: 8
+        on-kill-max: 15
+        on-death-min: 2
+        on-death-max: 5
 
     vip:
       # Point settings for VIP players.
       actions:
-        on-kill: 10
-        on-death: 5  # Loses 5 points on death.
+        on-kill-min: 10
+        on-kill-max: 20
+        on-death-min: 4
+        on-death-max: 8
+
+# Per-world point multipliers. Worlds not listed here use a multiplier of 1.0.
+# Example: a multiplier of 1.5 means players earn 50% more points in that world.
+world-multipliers:
+  pvp_world: 1.0
+  hardcore_world: 1.5
+  survival_world: 0.5
 
 # In these worlds player's not earn or lose point
 blacklist-worlds:
